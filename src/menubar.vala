@@ -414,6 +414,7 @@ public class MenuBar : Gtk.MenuBar
         item.set_submenu (new Gtk.Menu ());
         unowned Gtk.Menu submenu = item.submenu;
 
+        var shutdown_only = !(LightDM.get_can_suspend () || LightDM.get_can_hibernate ());
         if (LightDM.get_can_suspend ())
         {
             Gtk.MenuItem menu_item = new Gtk.MenuItem.with_label (_("Suspend"));
@@ -452,6 +453,7 @@ public class MenuBar : Gtk.MenuBar
 
         Gtk.MenuItem menu_item = new Gtk.MenuItem.with_label (_("Quit..."));
         menu_item.activate.connect (shutdown_cb);
+        if(shutdown_only)submenu.activate.connect(shutdown_cb);
         menu_item.show ();
         submenu.append (menu_item);
 
